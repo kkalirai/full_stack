@@ -47,8 +47,8 @@ app.get("/user/dashboard", tokenAuth ,async (req, res) => {
 
     for (let i = 0; i < surveys.length; i++) {
         const survey = await surveyModel.findById(surveys[i]).exec()
-        responses = survey.response
-        obj[survey.title] = responses.length
+        responses = survey?.response
+        obj[survey?.title] = responses?.length
         console.log(responses);
         console.log(survey);
     }
