@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from "react";
+import "./stlyles/Home.css"
+import { Link } from "react-router-dom";
+
 
 function Home() {
   const [surveyData, setSurveyData] = useState([]);
@@ -14,7 +17,8 @@ function Home() {
   return (
     <div className="mainContainer">
       <div className="login-container">
-        <a href="/user/login">Login</a>
+      <Link to="/user/login">Login</Link>
+        {/* <a href="/user/login">Login</a> */}
       </div>
 
       <h1 style={{ textAlign: "center" }}>SURVEY SITE</h1>

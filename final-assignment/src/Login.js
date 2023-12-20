@@ -1,4 +1,6 @@
 import React from "react";
+import "./stlyles/Login.css";
+import { Outlet, Link } from "react-router-dom";
 
 function Login() {
   return (
@@ -22,7 +24,8 @@ function Login() {
 
           <button type="submit">Join Now</button>
           <p style={{ color: "#828282" }}>
-            Don't have an account? <a href="/user/register">Create One</a>
+            Don't have an account?
+            <Link to="/user/register">Create One</Link>
           </p>
         </form>
       </div>
