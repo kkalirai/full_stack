@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Survey Site - Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+        }
+
+        header h1 {
+            font-size: 24px;
+            margin: 0;
+        }
+
+        nav a {
+            color: #007bff;
+            text-decoration: none;
+            padding: 5px 10px;
+        }
+
+        nav a.logout {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 5px 10px;
+            font-size: 14px;
+        }
+
+        section {
+            margin-bottom: 20px;
+            border-radius: 5px;
+            padding: 20px;
+            background-color: #fff;
+        }
+
+        section h2 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .survey-list ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .survey-list li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            padding: 5px 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .response-count {
+            background-color: #eee;
+            border-radius: 5px;
+            color: #333;
+            font-size: 14px;
+            margin-left: 20px;
+            padding: 5px 10px;
+            margin-right: 10px;
+        }
+
+        .survey-list li p {
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            color: #333;
+        }
+
+        .participant-list {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Survey Site</h1>
+            <nav>
+                <a href="/user/create-survey">Create Survey</a>
+                <a href="/">Explore Surveys</a>
+                <form action="/user/logout" method="post" style="display: inline-block;">
+                    <button type="submit" style="display: block; border: none; font-size: 15px; color: rgb(109, 109, 255); cursor: pointer;">Logout</button>
+                </form>
+            </nav>
+        </header>
+
+        <section class="survey-list">
+            <h2>Your Surveys</h2>
+            <ul>
+                <% for (const response in responses) { %>
+                    <li>
+                        <p>
+                            <%= response %>
+                        </p>
+                        <span class="response-count">
+                            <%= responses[response] %>
+                        </span>
+                    </li>
+                    <% } %>
+            </ul>
+        </section>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

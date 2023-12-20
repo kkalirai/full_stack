@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Survey Site</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f5f5f5;
+    }
+
+    .navigation-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .navigation-bar a {
+      text-decoration: none;
+      padding: 5px 10px;
+      color: #007bff;
+    }
+
+    .mainContainer {
+      width: 50%;
+      margin: auto;
+      margin-top: 40px;
+    }
+
+    .login-container {
+      float: right;
+      margin-top: -10px;
+      padding: 10px 20px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      background-color: #007bff;
+      color: #fff;
+      cursor: pointer;
+
+    }
+
+    .login-container:hover {
+      background-color: #0059b9;
+    }
+
+    .login-container a {
+      text-decoration: none;
+      color: white;
+    }
+
+    h1 {
+      font-size: 24px;
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .surveyContainer {
+      background-color: #d9d4d4;
+      padding: 30px;
+      border-radius: 10px;
+      margin-bottom: 30px;
+      margin-top: 30px;
+
+    }
+
+    .surveyContainer h2 {
+      margin-bottom: 10px;
+      font-size: 18px;
+
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    input[type="text"],
+    input[type="email"] {
+      width: 90%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 3px;
+      background-color: #f5f5f5;
+      outline: none;
+    }
+
+    input[type="radio"] {
+      cursor: pointer;
+    }
+
+    input[type="text"]:hover,
+    input[type="email"]:hover,
+    textarea:hover {
+      border: 1px solid black;
+    }
+
+    textarea {
+      width: 90%;
+      resize: none;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      background-color: #f5f5f5;
+    }
+
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+      background-color: #007bff;
+      color: #fff;
+      margin-top: 20px;
+    }
+
+    button:hover {
+      opacity: 0.8;
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <div class="mainContainer">
+
+    <div class="login-container">
+      <a href="/user/login">Login</a>
+    </div>
+
+    <h1 style="text-align: center;">SURVEY SITE</h1>
+
+    <div class="surveyContainer">
+      <h2>Survey Title: You can fill the form like this on various topics</h2>
+      <form action="submit-survey.php" method="post">
+        <label for="name">Your Name:</label>
+        <input type="text" id="name" name="name"  disabled required>
+        <br><br>
+        <label for="email">Your Email (optional):</label>
+        <input type="email" id="email" disabled name="email">
+  
+        <h3>Survey Questions:</h3>
+  
+        <p>How often do you use this website?</p>
+        <label for="use-often"style="display: inline-block;">Agree</label>
+        <input type="radio" id="use-often" disabled name="usage" value="often" style="display: inline-block;">
+        
+        <label for="use-sometimes" style="display: inline-block;">Disagree</label>
+        <input type="radio" id="use-sometimes" disabled name="usage" value="sometimes" style="display: inline-block;">
+        
+        <p>What could be improved on this website?</p>
+        <textarea name="suggestions" id="suggestions" disabled cols="50" rows="3"></textarea>
+  
+        <button type="submit" disabled>Submit Survey</button>
+      </form>
+    </div>
+  
+
+    <%surveyData.forEach(survey=>{ %>
+      <div class="surveyContainer">
+        <h2>
+          <%= survey.title %>
+        </h2>
+        <form action="/submit-response/<%= survey._id %>" method="post">
+          <label for="name">Your Name:</label>
+          <input type="text" id="name" name="name" required>
+          <br><br>
+          <label for="email">Your Email (optional):</label>
+          <input type="email" id="email" name="email">
+
+          <h3>Survey Questions:</h3>
+          <% let counter = 1; survey.agreeDisagree.forEach(question => { %>
+            <p>
+              <%= question %>
+            </p>
+            <label for="question<%= counter %>-agree" style="display: inline-block;">Agree</label>
+            <input type="radio" required id="question<%= counter %>-agree" name="question<%= counter %>" value="agree" style="display: inline-block;">
+          
+            <label for="question<%= counter %>-disagree" style="display: inline-block;">Disagree</label>
+            <input type="radio" required id="question<%= counter %>-disagree" name="question<%= counter %>" value="disagree" style="display: inline-block;">
+            <% counter++; // Increment counter for each question %>
+          <% }); %>
+
+              <% survey.shortAnswer.forEach(question=>{ %>
+                <p>
+                  <%= question %>
+                </p>
+                <textarea name="suggestions" id="suggestions" cols="50" rows="3" required></textarea>
+                <% })%>
+
+                  <button type="submit">Submit Survey</button>
+        </form>
+      </div>
+
+      <% })%>
+
+  </div>
+
+</body>
+
+</html>
