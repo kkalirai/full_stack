@@ -20,7 +20,7 @@ app.use(cookies());
 
 // Function to generate the JWT Token
 
-mongoose.connect('mongodb+srv://amarscn:cKJG1RWoQmqbB12A@cluster0.nofsb2n.mongodb.net/?retryWrites=true&w=majority');
+mongoose.connect('mongodb+srv://karan:karan@cluster0.xgfhdcv.mongodb.net/?retryWrites=true&w=majority');
 
 // Middleware to check if the user is registered or not
 
