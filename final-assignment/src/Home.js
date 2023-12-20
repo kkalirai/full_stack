@@ -1,31 +1,16 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 function Home() {
-
-
+  const [surveyData, setSurveyData] = useState([]);
+  const getSurvey = async () => {
+    const res = await fetch("http://localhost:3000/survey");
+    const survey = await res.json();
+    setSurveyData(survey);
+  };
   useEffect(() => {
-    
-    
-  
-    return () => {
-      
-    }
-  }, [third])
-  
+    getSurvey();
+  }, []);
 
-
-  const surveyData = [
-    {
-      _id: { $oid: "65832664a5559f834b18e917" },
-      title: "testing",
-      ownerName: "test",
-      ownerID: "65831de45dfd3ae25bf05c66",
-      agreeDisagree: ["rkjrlkj", "fasdasdf"],
-      shortAnswer: ["wTF"],
-      response: [],
-      __v: { $numberInt: "0" },
-    },
-  ];
   return (
     <div className="mainContainer">
       <div className="login-container">
