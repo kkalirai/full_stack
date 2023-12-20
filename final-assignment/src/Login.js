@@ -1,8 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
 import "./stlyles/Login.css";
 import { Outlet, Link } from "react-router-dom";
 
 function Login() {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  async function checkLogin() {
+    try {
+      const data = { username, password };
+      const response = await fetch("http://localhost:3000/user/login", {
+        method: "POST", // or 'PUT'
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      const result = await response.json();
+      console.log("Success:", result);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  }
+
   return (
     <div className="container">
       <div className="hero">
@@ -14,15 +35,29 @@ function Login() {
         <form action="" method="post">
           <div className="field">
             <label htmlFor="username">Username</label>
-            <input type="text" id="username" name="username" required />
+            <input
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              type="text"
+              id="username"
+              name="username"
+              required
+            />
           </div>
 
           <div className="field">
             <label htmlFor="password">Password</label>
-            <input type="password" id="password" name="password" required />
+            <input
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              type="password"
+              id="password"
+              name="password"
+              required
+            />
           </div>
 
-          <button type="submit">Join Now</button>
+          <button onClick={() => checkLogin()}>Login</button>
           <p style={{ color: "#828282" }}>
             Don't have an account?
             <Link to="/user/register">Create One</Link>
