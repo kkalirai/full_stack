@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import "./stlyles/Login.css";
-import { Outlet, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function Login() {
   const [username, setUsername] = useState("");

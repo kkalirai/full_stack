@@ -36,22 +36,21 @@ app.get("/user/register", (req, res) => {
 });
 
 app.get("/user/dashboard", tokenAuth, async (req, res) => {
-  const token = req.cookies.auth_token;
-
-  const { userID } = jwt.verify(token, "mysecretkey");
-  let user = await userModel.findById(userID).exec();
-  let surveys = user.survey;
-  obj = {};
-
-  for (let i = 0; i < surveys.length; i++) {
-    const survey = await surveyModel.findById(surveys[i]).exec();
-    responses = survey?.response;
-    obj[survey?.title] = responses?.length;
-    console.log(responses);
-    console.log(survey);
+  try {
+    const token = req.cookies.auth_token;
+    const { userID } = jwt.verify(token, "mysecretkey");
+    let user = await userModel.findById(userID).exec();
+    let surveys = user.survey;
+    let obj = {};
+    for (let i = 0; i < surveys.length; i++) {
+      const survey = await surveyModel.findById(surveys[i]).exec();
+      let responses = survey?.response;
+      obj[survey?.title] = responses?.length;
+    }
+    res.status(200).json({ responses: obj });
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
   }
-  console.log(obj);
-  res.render("dashboard", { responses: obj });
 });
 
 app.get("/", async (req, res) => {
