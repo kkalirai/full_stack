@@ -1,6 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 function Home() {
+
+
+  useEffect(() => {
+    
+    
+  
+    return () => {
+      
+    }
+  }, [third])
+  
+
+
   const surveyData = [
     {
       _id: { $oid: "65832664a5559f834b18e917" },

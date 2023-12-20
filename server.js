@@ -4,6 +4,7 @@ var cookies = require("cookie-parser");
 const mongoose = require("mongoose")
 var app = express()
 const bcrypt = require("bcrypt")
+var cors = require('cors')
 
 const userModel = require("./models/user")
 const surveyModel = require("./models/survey")
@@ -15,6 +16,9 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(express.static("public"));
 app.use(cookies());
+app.use(cors())
+
+
 
 
 
@@ -60,6 +64,12 @@ app.get("/", async (req, res) => {
     const surveyData = await surveyModel.find();
     // res.send("GOt it ")
     res.render('home', { surveyData: surveyData })
+})
+
+app.get("/survey", async (req, res) => {
+    const surveyData = await surveyModel.find();
+    // res.send("GOt it ")
+    res.send(surveyData);
 })
 
 app.get("/user/create-survey", tokenAuth, (req, res) => {
