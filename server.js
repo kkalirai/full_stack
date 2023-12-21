@@ -28,9 +28,9 @@ mongoose.connect(
 
 // Registration and Login Api
 
-app.get("/user/dashboard", tokenAuth, async (req, res) => {
+app.post("/user/dashboard", async (req, res) => {
   try {
-    const token = req.cookies.auth_token;
+    const token = req.body.auth_token;
     const { userID } = jwt.verify(token, "mysecretkey");
     let user = await userModel.findById(userID).exec();
     let surveys = user.survey;
@@ -131,15 +131,6 @@ app.post("/user/register", async (req, res) => {
   }
 });
 
-async function tokenAuth(req, res, next) {
-  const token = req.cookies.auth_token;
-
-  if (!token) {
-    return res.redirect("/user/login");
-  }
-  next();
-}
-
 app.post("/user/create-survey", async (req, res) => {
   const title = req.body.survey_title;
   const agreeDisagree = req.body.agreeDisagree;
@@ -147,7 +138,6 @@ app.post("/user/create-survey", async (req, res) => {
 
   // Get the token from the cookie
   const token = req.body.auth_token;
-  console.log("yaha tk theek hia");
   const { userID } = jwt.verify(token, "mysecretkey");
   let user = await userModel.findById(userID).exec();
 

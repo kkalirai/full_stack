@@ -2,7 +2,7 @@ import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-function Dashboard({ responses }) {
+function Dashboard() {
   const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   useEffect(() => {
@@ -13,6 +13,23 @@ function Dashboard({ responses }) {
       navigate("/user/login");
     }
   }, [navigate]);
+
+  const [responses, setResponses] = useState([]);
+  const getSurvey = async () => {
+    const res = await fetch("http://localhost:3000/user/dashboard", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ auth_token: Cookies.get("auth_token") }),
+    });
+    const survey = await res.json();
+    console.log(survey.responses);
+    setResponses(survey?.responses);
+  };
+  useEffect(() => {
+    getSurvey();
+  }, []);
 
   return (
     <div
@@ -89,7 +106,7 @@ function Dashboard({ responses }) {
               Your Surveys
             </h2>
             <ul style={{ margin: 0, padding: 0, listStyle: "none" }}>
-              {responses?.map(([survey, count]) => (
+              {Object.entries(responses)?.map(([survey, count]) => (
                 <li
                   key={survey}
                   style={{
