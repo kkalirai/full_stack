@@ -1,6 +1,7 @@
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const SurveyForm = () => {
   const navigate = useNavigate();
@@ -101,6 +102,9 @@ const SurveyForm = () => {
     >
       {isAuthenticated ? (
         <>
+          <div className="login-container">
+            <Link to="/user/dashboard">Dashboard</Link>
+          </div>
           <h2>Create a New Survey</h2>
           <p>
             You can Add Agree/Disagree and Short Answer Type Question in your

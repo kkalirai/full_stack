@@ -22,10 +22,11 @@ const SurveyCommunity = () => {
         },
         body: JSON.stringify({ username, email, password }),
       });
-
+      const result = await response.json();
       if (response.ok) {
         alert("user created");
-        Cookies.set("auth_token", response.auth_token, {
+        console.log(result);
+        Cookies.set("auth_token", result.auth_token, {
           expires: 7,
           path: "/",
         });

@@ -52,32 +52,7 @@ app.get("/survey", async (req, res) => {
   res.send(surveyData);
 });
 
-//   const { username, password } = req.body;
-
-//   // Check for user existence
-//   const user = await userModel.findOne({ username }).exec();
-//   if (!user) {
-//     return res.status(401).send({ message: "Invalid username or password" });
-//   }
-
-//   // Comparing Hashed Password
-//   const isValidPassword = await bcrypt.compare(password, user.password);
-//   if (!isValidPassword) {
-//     return res.status(401).send({ message: "Invalid username or password" });
-//   }
-
-//   const token = jwt.sign({ userID: user._id }, "mysecretkey", {
-//     expiresIn: "5d",
-//   });
-
-//   res.cookie("auth_token", token, { httpOnly: true });
-
-//   // Send successful login response with token and user data
-//   res.redirect("/user/dashboard");
-//   // res.send({ message: 'Login successful', token, user: { username: user.username, email: user.email } });
-// });
 app.post("/user/login", async (req, res) => {
-  console.log("response is ", req.body);
   const { username, password } = req.body;
 
   // Check for user existence
@@ -96,21 +71,13 @@ app.post("/user/login", async (req, res) => {
     expiresIn: "5d",
   });
 
-  //   res.cookie("auth_token", token, { httpOnly: true });
   return res
     .status(200)
     .send({ message: "Login successful", auth_token: token });
-
-  // Send successful login response with token and user data
-  //   res.redirect("/user/dashboard");
-  // res.send({ message: 'Login successful', token, user: { username: user.username, email: user.email } });
 });
 
 app.post("/user/register", async (req, res) => {
   const { username, email, password } = req.body;
-  console.log(req.body);
-
-  // Check if user already exists or not
   const existingUser = await userModel.findOne({ username: username }).exec();
   if (existingUser) {
     return res.status(409).send({ message: "Username already exists" });
@@ -135,9 +102,9 @@ app.post("/user/create-survey", async (req, res) => {
   const title = req.body.survey_title;
   const agreeDisagree = req.body.agreeDisagree;
   const shortAnswer = req.body.shortAnswer;
-
   // Get the token from the cookie
   const token = req.body.auth_token;
+  console.log("token", token);
   const { userID } = jwt.verify(token, "mysecretkey");
   let user = await userModel.findById(userID).exec();
 
@@ -162,7 +129,6 @@ app.post("/submit-response/:surveyID", async (req, res) => {
   const surveyID = req.params.surveyID;
 
   const survey = await surveyModel.findById(surveyID).exec();
-  // console.log(name, survey.ownerID);
   const newReponse = new responseModel({
     username: req.body.name,
     surveyID: surveyID,

@@ -106,42 +106,43 @@ function Dashboard() {
               Your Surveys
             </h2>
             <ul style={{ margin: 0, padding: 0, listStyle: "none" }}>
-              {Object.entries(responses)?.map(([survey, count]) => (
-                <li
-                  key={survey}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    marginBottom: "10px",
-                    padding: "5px 0",
-                    borderBottom: "1px solid #ddd",
-                  }}
-                >
-                  <p
+              {responses &&
+                Object.entries(responses)?.map(([survey, count]) => (
+                  <li
+                    key={survey}
                     style={{
-                      fontSize: "16px",
-                      fontWeight: "bold",
-                      textDecoration: "none",
-                      color: "#333",
+                      display: "flex",
+                      alignItems: "center",
+                      marginBottom: "10px",
+                      padding: "5px 0",
+                      borderBottom: "1px solid #ddd",
                     }}
                   >
-                    {survey}
-                  </p>
-                  <span
-                    style={{
-                      backgroundColor: "#eee",
-                      borderRadius: "5px",
-                      color: "#333",
-                      fontSize: "14px",
-                      marginLeft: "20px",
-                      padding: "5px 10px",
-                      marginRight: "10px",
-                    }}
-                  >
-                    {count}
-                  </span>
-                </li>
-              ))}
+                    <p
+                      style={{
+                        fontSize: "16px",
+                        fontWeight: "bold",
+                        textDecoration: "none",
+                        color: "#333",
+                      }}
+                    >
+                      {survey}
+                    </p>
+                    <span
+                      style={{
+                        backgroundColor: "#eee",
+                        borderRadius: "5px",
+                        color: "#333",
+                        fontSize: "14px",
+                        marginLeft: "20px",
+                        padding: "5px 10px",
+                        marginRight: "10px",
+                      }}
+                    >
+                      {count}
+                    </span>
+                  </li>
+                ))}
             </ul>
           </section>
         </div>

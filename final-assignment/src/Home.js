@@ -12,7 +12,7 @@ function Home() {
   useEffect(() => {
     getSurvey();
   }, []);
-  const handleSurveySubmit = async (event, surveyID) => {
+  const handleSurveySubmit = async (event, surveyID, index) => {
     event.preventDefault();
     const form = event.target;
     const formData = new FormData(form);
@@ -33,9 +33,9 @@ function Home() {
     console.log("formData", surveyResponses);
 
     // // Call the submitSurvey function with the survey ID and user responses
-    await submitSurvey(surveyID, surveyResponses);
+    await submitSurvey(surveyID, surveyResponses, index);
   };
-  const submitSurvey = async (surveyID, formData) => {
+  const submitSurvey = async (surveyID, formData, index) => {
     try {
       const res = await fetch(
         `http://localhost:3000/submit-response/${surveyID}`,
@@ -49,6 +49,8 @@ function Home() {
       );
       if (res.ok) {
         console.log("Survey submitted successfully");
+        alert("Survey submitted successfully");
+        document.getElementById("myForm" + index).reset();
       } else {
         console.error("Failed to submit survey");
       }
@@ -60,6 +62,9 @@ function Home() {
     <div className="mainContainer">
       <div className="login-container">
         <Link to="/user/create-survey">Create Survey</Link>
+      </div>
+      <div className="login-container">
+        <Link to="/user/dashboard">Dashboard</Link>
       </div>
 
       <h1 style={{ textAlign: "center" }}>SURVEY SITE</h1>
@@ -117,10 +122,13 @@ function Home() {
       </div>
 
       {/* Mapping over survey data */}
-      {surveyData?.map((survey) => (
+      {surveyData?.map((survey, index) => (
         <div className="surveyContainer" key={survey._id}>
           <h2>{survey.title}</h2>
-          <form onSubmit={(e) => handleSurveySubmit(e, survey._id)}>
+          <form
+            id={"myForm" + index}
+            onSubmit={(e) => handleSurveySubmit(e, survey._id, index)}
+          >
             <label htmlFor="name">Your Name:</label>
             <input type="text" id="name" name="name" required />
             <br />
@@ -131,9 +139,9 @@ function Home() {
             <h3>Survey Questions:</h3>
 
             {/* Rendering Agree/Disagree questions */}
-            {survey.agreeDisagree.map((question, index) => (
+            {survey?.agreeDisagree?.map((question, index) => (
               <div key={index}>
-                <p>{question}</p>
+                <p>{question?.question}</p>
                 <label
                   htmlFor={`question${index + 1}-agree`}
                   style={{ display: "inline-block" }}
@@ -166,9 +174,9 @@ function Home() {
             ))}
 
             {/* Rendering Short Answer questions */}
-            {survey.shortAnswer.map((question, index) => (
+            {survey?.shortAnswer?.map((question, index) => (
               <div key={index}>
-                <p>{question}</p>
+                <p>{question?.question}</p>
                 <textarea
                   name={`shortQuestion-${index}`}
                   id={`shortQuestion-${index}`}

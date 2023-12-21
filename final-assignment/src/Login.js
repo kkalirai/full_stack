@@ -96,6 +96,11 @@ function Login() {
           <div className="field" style={{ marginBottom: "15px" }}>
             <label htmlFor="password">Password</label>
             <input
+              onKeyDown={(e) => {
+                if (e.keyCode == 13) {
+                  checkLogin();
+                }
+              }}
               type="password"
               id="password"
               name="password"
