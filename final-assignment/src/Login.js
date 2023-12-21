@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Link, redirect, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 function Login() {
   const navigate = useNavigate();
@@ -21,10 +22,18 @@ function Login() {
       const result = await response.json();
       console.log("Success:", response);
       if (response.status === 200) {
+        Cookies.set("auth_token", result.auth_token, { expires: 7, path: "/" });
         navigate("/user/dashboard");
+      } else {
+        alert("Something went wrong, Please log in again.");
+        setUsername("");
+        setPassword("");
       }
     } catch (error) {
       console.error("Error:", error);
+      alert("Something went wrong, Please log in again.");
+      setUsername("");
+      setPassword("");
     }
   }
 

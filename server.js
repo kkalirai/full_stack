@@ -27,13 +27,6 @@ mongoose.connect(
 // Middleware to check if the user is registered or not
 
 // Registration and Login Api
-app.get("/user/login", (req, res) => {
-  res.render("login");
-});
-
-app.get("/user/register", (req, res) => {
-  res.render("register");
-});
 
 app.get("/user/dashboard", tokenAuth, async (req, res) => {
   try {
@@ -53,23 +46,12 @@ app.get("/user/dashboard", tokenAuth, async (req, res) => {
   }
 });
 
-app.get("/", async (req, res) => {
-  const surveyData = await surveyModel.find();
-  // res.send("GOt it ")
-  res.render("home", { surveyData: surveyData });
-});
-
 app.get("/survey", async (req, res) => {
   const surveyData = await surveyModel.find();
   // res.send("GOt it ")
   res.send(surveyData);
 });
 
-app.get("/user/create-survey", tokenAuth, (req, res) => {
-  res.render("survey");
-});
-
-// app.post("/user/login", async (req, res) => {
 //   const { username, password } = req.body;
 
 //   // Check for user existence
@@ -96,7 +78,6 @@ app.get("/user/create-survey", tokenAuth, (req, res) => {
 // });
 app.post("/user/login", async (req, res) => {
   console.log("response is ", req.body);
-  return res.status(200).send({ message: "Enjoy" });
   const { username, password } = req.body;
 
   // Check for user existence
@@ -115,10 +96,13 @@ app.post("/user/login", async (req, res) => {
     expiresIn: "5d",
   });
 
-  res.cookie("auth_token", token, { httpOnly: true });
+  //   res.cookie("auth_token", token, { httpOnly: true });
+  return res
+    .status(200)
+    .send({ message: "Login successful", auth_token: token });
 
   // Send successful login response with token and user data
-  res.redirect("/user/dashboard");
+  //   res.redirect("/user/dashboard");
   // res.send({ message: 'Login successful', token, user: { username: user.username, email: user.email } });
 });
 
@@ -144,27 +128,6 @@ app.post("/user/register", async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).send({ message: "Internal server error" });
-  }
-});
-
-app.post("/user/logout", async (req, res) => {
-  // Get the token from the cookie
-  const token = req.cookies.auth_token;
-  if (!token) {
-    return res.status(401).send({ message: "Unauthorized" });
-  }
-
-  try {
-    // Clear the token cookie
-    console.log(token);
-    res.clearCookie("auth_token");
-
-    // Logout successful
-    //   res.send({ message: 'Logout successful' });
-    res.redirect("/user/register");
-  } catch (error) {
-    console.error(error);
-    res.status(500).send({ message: "Error clearing cookie" });
   }
 });
 
