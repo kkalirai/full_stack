@@ -1,6 +1,7 @@
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { REACT_APP_BASE_URL } from "./constants";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -16,16 +17,13 @@ function Dashboard() {
 
   const [responses, setResponses] = useState([]);
   const getSurvey = async () => {
-    const res = await fetch(
-      process.env.REACT_APP_BASE_URL + "/user/dashboard",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ auth_token: Cookies.get("auth_token") }),
-      }
-    );
+    const res = await fetch(REACT_APP_BASE_URL + "/user/dashboard", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ auth_token: Cookies.get("auth_token") }),
+    });
     const survey = await res.json();
     console.log(survey.responses);
     setResponses(survey?.responses);

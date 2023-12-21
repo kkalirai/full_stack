@@ -2,6 +2,7 @@ import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { REACT_APP_BASE_URL } from "./constants";
 
 const SurveyForm = () => {
   const navigate = useNavigate();
@@ -65,7 +66,7 @@ const SurveyForm = () => {
 
     console.log("Submitting survey:", surveyData);
 
-    fetch(process.env.REACT_APP_BASE_URL + "/user/create-survey", {
+    fetch(REACT_APP_BASE_URL + "/user/create-survey", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

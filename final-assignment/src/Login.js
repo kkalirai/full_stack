@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
+import { REACT_APP_BASE_URL } from "./constants";
 
 function Login() {
   const navigate = useNavigate();
@@ -11,16 +12,13 @@ function Login() {
     try {
       const data = { username: username, password: password };
       console.log("username", data);
-      const response = await fetch(
-        `${process.env.REACT_APP_BASE_URL}/user/login`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        }
-      );
+      const response = await fetch(`${REACT_APP_BASE_URL}/user/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
 
       const result = await response.json();
       console.log("Success:", response);

@@ -1,6 +1,7 @@
 import Cookies from "js-cookie";
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { REACT_APP_BASE_URL } from "./constants";
 
 const SurveyCommunity = () => {
   const navigate = useNavigate();
@@ -13,18 +14,15 @@ const SurveyCommunity = () => {
     const password = event.target.password.value;
 
     try {
-      const response = await fetch(
-        process.env.REACT_APP_BASE_URL + "/user/register",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            // Include authentication token if required by your API
-            // Authorization: `Bearer ${Cookies.get("auth_token")}`,
-          },
-          body: JSON.stringify({ username, email, password }),
-        }
-      );
+      const response = await fetch(REACT_APP_BASE_URL + "/user/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          // Include authentication token if required by your API
+          // Authorization: `Bearer ${Cookies.get("auth_token")}`,
+        },
+        body: JSON.stringify({ username, email, password }),
+      });
       const result = await response.json();
       if (response.ok) {
         alert("user created");
