@@ -1,6 +1,44 @@
+import Cookies from "js-cookie";
 import React from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 const SurveyCommunity = () => {
+  const navigate = useNavigate();
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    const username = event.target.username.value;
+    const email = event.target.email.value;
+    const password = event.target.password.value;
+
+    try {
+      const response = await fetch("http://localhost:3000/user/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          // Include authentication token if required by your API
+          // Authorization: `Bearer ${Cookies.get("auth_token")}`,
+        },
+        body: JSON.stringify({ username, email, password }),
+      });
+
+      if (response.ok) {
+        alert("user created");
+        Cookies.set("auth_token", response.auth_token, {
+          expires: 7,
+          path: "/",
+        });
+        navigate("/user/dashboard");
+      } else {
+        // Handle error scenarios, e.g., display an error message
+        console.error("Error submitting data:", response.statusText);
+      }
+    } catch (error) {
+      // Handle exceptions, e.g., network errors
+      console.error("Error submitting data:", error);
+    }
+  };
   return (
     <div
       className="container"
@@ -39,7 +77,7 @@ const SurveyCommunity = () => {
         }}
       >
         <h2>Create your account</h2>
-        <form action="/user/register" method="post">
+        <form onSubmit={handleSubmit}>
           <div className="field" style={{ marginBottom: "15px" }}>
             <label htmlFor="username">Username</label>
             <input
@@ -96,10 +134,10 @@ const SurveyCommunity = () => {
               borderRadius: "4px",
             }}
           >
-            Join Now
+            Register
           </button>
           <p style={{ color: "#828282" }}>
-            Already have an account? <a href="/user/login">Log in here</a>
+            Already have an account? <Link to="/user/login">Log in here</Link>
           </p>
         </form>
       </div>

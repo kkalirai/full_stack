@@ -108,6 +108,7 @@ app.post("/user/login", async (req, res) => {
 
 app.post("/user/register", async (req, res) => {
   const { username, email, password } = req.body;
+  console.log(req.body);
 
   // Check if user already exists or not
   const existingUser = await userModel.findOne({ username: username }).exec();
@@ -123,8 +124,7 @@ app.post("/user/register", async (req, res) => {
     const token = jwt.sign({ userID: newUser._id }, "mysecretkey", {
       expiresIn: "5d",
     });
-    res.cookie("auth_token", token, { httpOnly: true });
-    res.redirect("/user/dashboard");
+    return res.status(200).send({ message: "User created", auth_token: token });
   } catch (error) {
     console.error(error);
     res.status(500).send({ message: "Internal server error" });
@@ -142,13 +142,12 @@ async function tokenAuth(req, res, next) {
 
 app.post("/user/create-survey", async (req, res) => {
   const title = req.body.survey_title;
-  const expiryDate = req.body.survey_expiry;
   const agreeDisagree = req.body.agreeDisagree;
   const shortAnswer = req.body.shortAnswer;
 
   // Get the token from the cookie
-  const token = req.cookies.auth_token;
-
+  const token = req.body.auth_token;
+  console.log("yaha tk theek hia");
   const { userID } = jwt.verify(token, "mysecretkey");
   let user = await userModel.findById(userID).exec();
 
@@ -166,8 +165,7 @@ app.post("/user/create-survey", async (req, res) => {
     { $push: { survey: newSurvey._id } },
     { new: true }
   );
-
-  res.redirect("/user/dashboard");
+  return res.status(200).send({ message: "Survey created" });
 });
 
 app.post("/submit-response/:surveyID", async (req, res) => {
@@ -188,7 +186,7 @@ app.post("/submit-response/:surveyID", async (req, res) => {
     { new: true }
   );
 
-  res.redirect("/");
+  return res.status(200).send({ message: "Survey submitted" });
 });
 
 app.set("view engine", "ejs");

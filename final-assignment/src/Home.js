@@ -12,11 +12,54 @@ function Home() {
   useEffect(() => {
     getSurvey();
   }, []);
+  const handleSurveySubmit = async (event, surveyID) => {
+    event.preventDefault();
+    const form = event.target;
+    const formData = new FormData(form);
 
+    // Extract data from the form
+    const surveyResponses = {};
+
+    formData.forEach((value, name) => {
+      console.log(name, value);
+      if (name.startsWith("agree")) {
+        surveyResponses["agreeDisagree"]?.push(value);
+      } else if (name.startsWith("shortQuestion")) {
+        surveyResponses["shortAnswer"]?.push(value);
+      } else {
+        surveyResponses[name] = value;
+      }
+    });
+    console.log("formData", surveyResponses);
+
+    // // Call the submitSurvey function with the survey ID and user responses
+    await submitSurvey(surveyID, surveyResponses);
+  };
+  const submitSurvey = async (surveyID, formData) => {
+    try {
+      const res = await fetch(
+        `http://localhost:3000/submit-response/${surveyID}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
+      if (res.ok) {
+        console.log("Survey submitted successfully");
+      } else {
+        console.error("Failed to submit survey");
+      }
+    } catch (error) {
+      console.error("Error submitting survey:", error);
+    }
+  };
   return (
     <div className="mainContainer">
       <div className="login-container">
-        <Link to="/user/login">Login</Link>
+        <Link to="/user/create-survey">Create Survey</Link>
       </div>
 
       <h1 style={{ textAlign: "center" }}>SURVEY SITE</h1>
@@ -77,7 +120,7 @@ function Home() {
       {surveyData?.map((survey) => (
         <div className="surveyContainer" key={survey._id}>
           <h2>{survey.title}</h2>
-          <form action={`/submit-response/${survey._id}`} method="post">
+          <form onSubmit={(e) => handleSurveySubmit(e, survey._id)}>
             <label htmlFor="name">Your Name:</label>
             <input type="text" id="name" name="name" required />
             <br />
@@ -100,8 +143,8 @@ function Home() {
                 <input
                   type="radio"
                   required
-                  id={`question${index + 1}-agree`}
-                  name={`question${index + 1}`}
+                  id={`agree${index + 1}-agree`}
+                  name={`agree${index + 1}`}
                   value="agree"
                   style={{ display: "inline-block" }}
                 />
@@ -114,8 +157,8 @@ function Home() {
                 <input
                   type="radio"
                   required
-                  id={`question${index + 1}-disagree`}
-                  name={`question${index + 1}`}
+                  id={`agree${index + 1}-disagree`}
+                  name={`agree${index + 1}`}
                   value="disagree"
                   style={{ display: "inline-block" }}
                 />
@@ -127,8 +170,8 @@ function Home() {
               <div key={index}>
                 <p>{question}</p>
                 <textarea
-                  name="suggestions"
-                  id={`suggestions-${index}`}
+                  name={`shortQuestion-${index}`}
+                  id={`shortQuestion-${index}`}
                   cols="50"
                   rows="3"
                   required
