@@ -37,6 +37,7 @@ app.post("/user/dashboard", async (req, res) => {
     let obj = {};
     for (let i = 0; i < surveys.length; i++) {
       const survey = await surveyModel.findById(surveys[i]).exec();
+      console.log(survey);
       let responses = survey?.response;
       obj[survey?.title] = responses?.length;
     }
