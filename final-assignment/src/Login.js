@@ -12,7 +12,7 @@ function Login() {
       const data = { username: username, password: password };
       console.log("username", data);
       const response = await fetch(
-        process.env.REACT_APP_BASE_URL + "/user/login",
+        `${process.env.REACT_APP_BASE_URL}/user/login`,
         {
           method: "POST",
           headers: {
