@@ -150,7 +150,7 @@ app.post("/submit-response/:surveyID", async (req, res) => {
 });
 
 app.set("view engine", "ejs");
-var port = 3000;
+var port = process.env.PORT;
 app.listen(port, () => {
   console.log("Server is running at port 3000");
 });

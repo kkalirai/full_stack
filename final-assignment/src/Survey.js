@@ -65,7 +65,7 @@ const SurveyForm = () => {
 
     console.log("Submitting survey:", surveyData);
 
-    fetch("http://localhost:3000/user/create-survey", {
+    fetch(REACT_APP_BASE_URL + "/user/create-survey", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

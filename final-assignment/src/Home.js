@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 function Home() {
   const [surveyData, setSurveyData] = useState([]);
   const getSurvey = async () => {
-    const res = await fetch("http://localhost:3000/survey");
+    const res = await fetch(REACT_APP_BASE_URL + "/survey");
     const survey = await res.json();
     setSurveyData(survey);
   };

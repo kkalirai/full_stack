@@ -16,7 +16,7 @@ function Dashboard() {
 
   const [responses, setResponses] = useState([]);
   const getSurvey = async () => {
-    const res = await fetch("http://localhost:3000/user/dashboard", {
+    const res = await fetch(REACT_APP_BASE_URL + "/user/dashboard", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

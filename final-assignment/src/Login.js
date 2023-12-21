@@ -11,7 +11,7 @@ function Login() {
     try {
       const data = { username: username, password: password };
       console.log("username", data);
-      const response = await fetch("http://localhost:3000/user/login", {
+      const response = await fetch(REACT_APP_BASE_URL + "/user/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
